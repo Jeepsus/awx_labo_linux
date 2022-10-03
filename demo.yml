@@ -1,0 +1,21 @@
+---
+- hosts: "{{ host_dest }}"
+  become: true
+  tasks:
+    - name: instalamos apache
+      package: 
+        name: httpd
+        state: latest
+    - name: habilitamos el servicio de apache - start and enable httpd
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+    - name: create el fichero index.html
+      file:
+        path: /var/www/html/index.html
+        state: touch
+    - name: escribimos en el fichero index.html
+      copy:
+        content: "Hello World!"
+        dest: /var/www/html/index.html
