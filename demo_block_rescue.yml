@@ -1,0 +1,20 @@
+---
+- hosts: "{{ hosts }}"
+  become: true
+  tasks:
+  - name: check url
+    block:
+      - uri:
+         url: "http://{{ hosts}}"
+    rescue:
+      - package:
+         name: httpd
+         state: present
+      - service:
+         name: httpd
+         state: started
+         enabled: yes
+    always:
+      - uri:
+         url: "http://{{ hosts}}"
+      
